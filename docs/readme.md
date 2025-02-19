@@ -30,7 +30,7 @@ This creates an `output.jpg` file with the result of the operation.
 - When taking the images to process, the camera should be completely still. This allows nonmoving objects (the ones you want to keep) to stay in the same place across all images.
 - The moving objects should have minimal overlap between images, allowing the median operation to count them as outliers rather than persistent objects.
 
-## How it works
+## How it Works
 
 The `np.median` function is used to take the median value of each red, green, and blue color channel for each pixel across all images.
 
