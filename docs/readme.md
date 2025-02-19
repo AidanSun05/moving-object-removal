@@ -1,6 +1,9 @@
 # Moving Object Removal
 
-This is a Python script to remove moving objects from a sequence of images using a median operation.
+This is a Python script to remove moving objects from a sequence of images using a median operation. There are 2 Python programs in this repository:
+
+- `remove-objects.py` only removes moving objects.
+- `remove-objects-aligned.py` first performs image alignment to account for small camera movements, then removes moving objects.
 
 See [Example Usage](example.md) for sample input and output images.
 
@@ -18,7 +21,11 @@ pip install opencv-python numpy
 ## Usage
 
 ```shell
+# Object removal only
 python remove-objects.py [DIR]
+
+# Object removal with image alignment
+python remove-objects-aligned.py [DIR]
 ```
 
 where `[DIR]` is a path to a directory containing the set of input files to process. **These must be `.jpg` files and have the same dimensions (such as 1920x1080).**
@@ -38,3 +45,8 @@ The `np.median` function is used to take the median value of each red, green, an
 - Pixels which are consistent throughout all images will remain unchanged.
 
 This process only retains details that exist in all images, erasing moving or anomalous ones.
+
+Image alignment is performed with an ORB feature detector (`cv2.ORB_create`). This feature detector uses the first available image as a template, and all later images will be adjusted to match it. The top feature matches are selected for a reliable alignment operation, which is outlined below:
+
+- A homography matrix is calculated using the matching feature points in both images with `cv2.findHomography`.
+- Warping of an image is performed with `cv2.warpPerspective`.
